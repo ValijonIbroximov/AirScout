@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <RootNamespace>Radiation_level_detector</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+	  <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="app.ico">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<ApplicationIcon>app.ico</ApplicationIcon>
+		<AssemblyName>AirScout</AssemblyName>
+		<Product>AHI AirScout</Product>
+		<Description>AirScout: harbiy maqsadlar uchun ko'chma meteorologik monitoring tizimi (apparat-dasturiy ta'minoti)</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="windows" />
+	</ItemGroup>
+	
+  <ItemGroup>
+    <None Remove="map.png" />
+    <None Remove="MV.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GMap.NET.WinForms" Version="2.1.7" />
+    <PackageReference Include="GMap.NET.WinPresentation" Version="2.1.7" />
+    <PackageReference Include="RJCP.SerialPortStream" Version="3.0.1" />
+    <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+    <PackageReference Include="System.Management" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="map.png" />
+    <Resource Include="MV.png" />
+  </ItemGroup>
+
+	
+	
+</Project>

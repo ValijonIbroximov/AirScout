@@ -1,0 +1,66 @@
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+
+#define GEIGER_PIN 2   
+#define BUZZER_PIN 9   
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); 
+
+volatile uint32_t pulseCount = 0;  
+unsigned long previousMillis = 0;
+const unsigned long interval = 3000; // 3 soniya
+float radiationLevel = 0.0; 
+float smoothedRadiation = 0.0;
+
+const float conversionFactor = 0.00812037; 
+const float alertThreshold = 0.05; 
+
+void countPulse() {  
+    pulseCount++;
+}
+
+void setup() {
+    Serial.begin(9600);
+    pinMode(GEIGER_PIN, INPUT);
+    pinMode(BUZZER_PIN, OUTPUT);
+
+    attachInterrupt(digitalPinToInterrupt(GEIGER_PIN), countPulse, RISING); 
+
+    lcd.init();
+    lcd.backlight();
+    lcd.setCursor(0, 0);
+    lcd.print(" RADIATSIYA KU- ");
+    lcd.setCursor(0, 1);
+    lcd.print("CHINI ANIQLOVCHI");
+    delay(1000);
+}
+
+void loop() {
+    unsigned long currentMillis = millis();
+    
+    if (currentMillis - previousMillis >= interval) {
+        previousMillis = currentMillis;
+
+        float CPM = pulseCount * (60.0 / (interval / 1000.0)); 
+        pulseCount = 0;  
+
+        radiationLevel = CPM * conversionFactor;
+
+        smoothedRadiation = (smoothedRadiation * 9 + radiationLevel) / 10;
+
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("RADIATSIYA KUCHI");
+        lcd.setCursor(0, 1);
+        lcd.print(smoothedRadiation * 1000, 2);
+        lcd.print(" nSv/h");
+
+        Serial.println(smoothedRadiation * 1000, 2);
+
+        if (smoothedRadiation >= alertThreshold) {
+            tone(BUZZER_PIN, 1000, 150);
+        } else {
+            noTone(BUZZER_PIN);
+        }
+    }
+}

@@ -1,0 +1,335 @@
+﻿<Window x:Class="Radiation_level_detector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Radiation_level_detector"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        Title="AHI Dazometr" Height="720" Width="1280" 
+        Icon="app.ico">
+    
+    
+
+    <Grid>
+        <Image Source="map.png" Stretch="Fill"/>
+
+        <!-- Port tanlash uchun ComboBox -->
+        <ComboBox x:Name="portComboBox" Width="120" Height="21" Margin="0,10,10,0"
+                  HorizontalAlignment="Right" VerticalAlignment="Top"
+                  SelectionChanged="portComboBox_SelectionChanged"/>
+
+        <!-- Olingan qiymatni chiqarish -->
+        <TextBlock x:Name="currentValueText" FontSize="20"
+                   HorizontalAlignment="Right" VerticalAlignment="Top"
+                   Foreground="Red" Margin="0,36,10,0"/>
+
+        <TextBlock x:Name="NotificationText" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Top"
+                   Margin="0,20,0,0"
+                   FontSize="20"
+                   Foreground="White"
+                   Background="#AA333333"
+                   Padding="20,10"
+                   Visibility="Collapsed"
+                   TextWrapping="Wrap"
+                   TextAlignment="Center"/>
+
+        <!-- Info Panel for Circle Hover -->
+        <!--
+        <Border x:Name="InfoPanel" 
+                Width="250" 
+                Height="120"
+                Background="#AA333333"
+                CornerRadius="10"
+                Padding="10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Visibility="Collapsed">
+            <StackPanel>
+                <TextBlock x:Name="InfoName" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                <TextBlock x:Name="InfoRadiation" FontSize="12" Foreground="White" Margin="0,5,0,0"/>
+                <TextBlock x:Name="InfoDanger" FontSize="12" Foreground="White" Margin="0,5,0,0"/>
+                <TextBlock x:Name="InfoCoordinates" FontSize="12" Foreground="White" Margin="0,5,0,0"/>
+                <TextBlock x:Name="InfoDistrict" FontSize="12" Foreground="White" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>-->
+
+        <!-- Sensor 1 -->
+        <Grid x:Name="AnimationGrid1" Width="140" Height="140" 
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              Margin="200,100,0,0">
+            <Ellipse x:Name="GlowEffect1"
+                     Width="140" Height="140"
+                     Fill="#00ff00"
+                     Opacity="0.3"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="glowScale1" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Circle1"
+                     Width="70" Height="70"
+                     Fill="#00ff00"
+                     Stroke="Transparent"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="scaleTransform1" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <TextBlock x:Name="PercentText1"
+                       Text="0%"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Foreground="blue"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Sensor 2 -->
+        <Grid x:Name="AnimationGrid2" Width="140" Height="140"
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              Margin="400,300,0,0">
+            <Ellipse x:Name="GlowEffect2"
+                     Width="140" Height="140"
+                     Fill="#00ff00"
+                     Opacity="0.3"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="glowScale2" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Circle2"
+                     Width="70" Height="70"
+                     Fill="#00ff00"
+                     Stroke="Transparent"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="scaleTransform2" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <TextBlock x:Name="PercentText2"
+                       Text="0%"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Foreground="blue"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Sensor 3 -->
+        <Grid x:Name="AnimationGrid3" Width="140" Height="140"
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              Margin="300,500,0,0">
+            <Ellipse x:Name="GlowEffect3"
+                     Width="140" Height="140"
+                     Fill="#00ff00"
+                     Opacity="0.3"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="glowScale3" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Circle3"
+                     Width="70" Height="70"
+                     Fill="#00ff00"
+                     Stroke="Transparent"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="scaleTransform3" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <TextBlock x:Name="PercentText3"
+                       Text="0%"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Foreground="blue"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Sensor 4 -->
+        <Grid x:Name="AnimationGrid4" Width="140" Height="140"
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              Margin="300,500,0,0">
+            <Ellipse x:Name="GlowEffect4"
+                     Width="140" Height="140"
+                     Fill="#00ff00"
+                     Opacity="0.3"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="glowScale4" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Circle4"
+                     Width="70" Height="70"
+                     Fill="#00ff00"
+                     Stroke="Transparent"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="scaleTransform4" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <TextBlock x:Name="PercentText4"
+                       Text="0%"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Foreground="blue"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Asosiy sensor -->
+        <Grid x:Name="AnimationGrid" Width="140" Height="140"
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              Margin="500,200,0,0">
+            <Ellipse x:Name="GlowEffect"
+                     Width="140" Height="140"
+                     Fill="#00ff00"
+                     Opacity="0.3"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="glowScale" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Circle"
+                     Width="70" Height="70"
+                     Fill="#00ff00"
+                     Stroke="Transparent"
+                     RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <ScaleTransform x:Name="scaleTransform" ScaleX="0.9" ScaleY="0.9"/>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <TextBlock x:Name="PercentText"
+                       Text="0%"
+                       FontSize="14"
+                       FontWeight="Bold"
+                       Foreground="blue"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            
+            
+            
+            
+            
+        </Grid>
+
+        <Grid x:Name="TopLayer" Panel.ZIndex="1000">
+            <Border x:Name="InfoPanel" 
+Width="auto" 
+Height="auto"
+Background="#AA333333"
+CornerRadius="10"
+Padding="10"
+HorizontalAlignment="Left"
+VerticalAlignment="Top"
+Visibility="Collapsed"
+Panel.ZIndex="1000">
+                <!-- Bu muhim qism -->
+                <StackPanel>
+                    <TextBlock x:Name="InfoName" FontSize="14" Foreground="White" FontWeight="Bold"/>
+                    <TextBlock x:Name="InfoRadiation" FontSize="12" Foreground="White" Margin="0,5,0,0"/>
+                    <TextBlock x:Name="InfoDanger" FontSize="12" Foreground="White" Margin="0,5,0,0"/>
+                    <TextBlock x:Name="InfoCoordinates" FontSize="12" Foreground="White" Margin="0,5,0,0"/>
+                    <TextBlock x:Name="InfoDistrict" FontSize="12" Foreground="White" Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="MenuAndTable" Panel.ZIndex="1000">
+            <Button x:Name="MenuButton" 
+                    Width="30" 
+                    Height="25"
+                    Margin="10,10,0,0"
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top"
+                    Background="white"
+                    BorderBrush="gray"
+                    Click="MenuButton_Click">
+                <StackPanel>
+                    <Rectangle Fill="gray" Height="3" Width="20" Margin="0,2"/>
+                    <Rectangle Fill="gray" Height="3" Width="20" Margin="0,2"/>
+                    <Rectangle Fill="gray" Height="3" Width="20" Margin="0,2"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Side panel -->
+            <Border x:Name="SidePanel"
+                    ScrollViewer.CanContentScroll="True"
+                    Width="200"
+                    Height="654"
+                    Background="#AA333333"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="-209,40,0,0">
+                <Border.RenderTransform>
+                    <TranslateTransform x:Name="SidePanelTransform"/>
+                </Border.RenderTransform>
+                <StackPanel Margin="10">
+                    <Button Click="FiltrButton_Click" Content="Filtr: Okruglar" Background="Gray" Foreground="White" FontSize="16" FontWeight="Bold" Margin="0,10"/>
+                    <StackPanel Name="filtrOkrug" Width="180" Height="auto">
+                        <Button Click="thoButton_Click" Content="THO" Background="Bisque"/>
+                        <StackPanel Name="THOmenu" Visibility="Collapsed">
+                            <Grid HorizontalAlignment="Left" Width="180">
+                                <Button Click="Button_Click" Width="130" HorizontalContentAlignment="Left" Content="AKTAHI"  Margin="10, 0, 40, 0"/>
+                                <Label x:Name="label0" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                            </Grid>
+                            <Grid HorizontalAlignment="Left" Width="180">
+                                <Button Click="Button1_Click" Width="130" HorizontalContentAlignment="Left" Content="71186 h/q"  Margin="10, 0, 40, 0"/>
+                                <Label x:Name="label1" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                            </Grid>
+                            <Grid HorizontalAlignment="Left" Width="180">
+                                <Button Click="Button2_Click" Width="130" HorizontalContentAlignment="Left" Content="Markaziy aloqa uzeli"  Margin="10, 0, 40, 0"/>
+                                <Label x:Name="label2" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                            </Grid>
+                            <Grid HorizontalAlignment="Left" Width="180">
+                                <Button Click="Button4_Click" Width="130" HorizontalContentAlignment="Left" Content="Maxsus avariya tik.bosh."  Margin="10, 0, 40, 0"/>
+                                <Label x:Name="label4" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                            </Grid>
+                            <Grid HorizontalAlignment="Left" Width="180">
+                                <Button Click="Button3_Click" Width="130" HorizontalContentAlignment="Left" Content="29262 h/q"  Margin="10, 0, 40, 0"/>
+                                <Label x:Name="label3" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                            </Grid>
+                            <!--<Button Click="Button1_Click" HorizontalContentAlignment="Left" Content="71186 h/q" Margin="10, 0, 0, 0"/>-->
+                            <!--<Button Click="Button2_Click" HorizontalContentAlignment="Left" Content="Markaziy aloqa uzeli" Margin="10, 0, 0, 0"/>-->
+                            <!--<Button Click="Button4_Click" HorizontalContentAlignment="Left" Content="Maxsus avariya tiklash bosh." Margin="10, 0, 0, 0"/>-->
+                            <!--<Button Click="Button3_Click" HorizontalContentAlignment="Left" Content="29262 h/q" Margin="10, 0, 0, 0"/>-->
+                            <Button Click="Button5_Click" HorizontalContentAlignment="Left" Content="Boshqa topilmadi" Background="DarkGray" Margin="10, 0, 0, 0"/>
+                        </StackPanel>
+                        <Button Content="ShHO" Background="Bisque"/>
+                        <Button Content="MHO" Background="Bisque"/>
+                        <Button Content="ShG'HO" Background="Bisque"/>
+                        <Button Content="JG'MHO" Background="Bisque"/>
+                    </StackPanel>
+
+                    <StackPanel Name="filtrDaraja" Visibility="Collapsed">
+                        <Grid HorizontalAlignment="Left" Width="180">
+                            <Button Click="Button_Click" Width="140" HorizontalContentAlignment="Left" Content="AKTAHI"  Margin="0, 0, 40, 0"/>
+                            <Label x:Name="label01" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                        </Grid>
+                        <Grid HorizontalAlignment="Left" Width="180">
+                            <Button Click="Button1_Click" Width="140" HorizontalContentAlignment="Left" Content="71186 h/q"  Margin="0, 0, 40, 0"/>
+                            <Label x:Name="label11" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                        </Grid>
+                        <Grid HorizontalAlignment="Left" Width="180">
+                            <Button Click="Button2_Click" Width="140" HorizontalContentAlignment="Left" Content="Markaziy aloqa uzeli"  Margin="0, 0, 40, 0"/>
+                            <Label x:Name="label21" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                        </Grid>
+                        <Grid HorizontalAlignment="Left" Width="180">
+                            <Button Click="Button4_Click" Width="140" HorizontalContentAlignment="Left" Content="Maxsus avariya tik.bosh."  Margin="0, 0, 40, 0"/>
+                            <Label x:Name="label41" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                        </Grid>
+                        <Grid HorizontalAlignment="Left" Width="180">
+                            <Button Click="Button3_Click" Width="140" HorizontalContentAlignment="Left" Content="29262 h/q"  Margin="0, 0, 40, 0"/>
+                            <Label x:Name="label31" Content="0.00%" Width="40" BorderBrush="Gray" BorderThickness="1" Height="auto" FontSize="7" HorizontalContentAlignment="Center" Background="#00ff00" FontWeight="Bold" Foreground="Blue" Margin="139, 0, 0, 0"/>
+                        </Grid>
+                        <Button Click="Button5_Click" HorizontalContentAlignment="Left" Content="Boshqa topilmadi" Background="DarkGray" Margin="0, 0, 0, 0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+    </Grid>
+</Window>
