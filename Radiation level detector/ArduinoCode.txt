@@ -1,66 +1,39 @@
-#include <Wire.h> 
-#include <LiquidCrystal_I2C.h>
+#include <DHT.h>
 
-#define GEIGER_PIN 2   
-#define BUZZER_PIN 9   
+#define DHTPIN 2            // DHT22 DATA pini D2 ga ulangan
+#define DHTTYPE DHT22       // Sensor turi
+DHT dht(DHTPIN, DHTTYPE);
 
-LiquidCrystal_I2C lcd(0x27, 16, 2); 
-
-volatile uint32_t pulseCount = 0;  
-unsigned long previousMillis = 0;
-const unsigned long interval = 3000; // 3 soniya
-float radiationLevel = 0.0; 
-float smoothedRadiation = 0.0;
-
-const float conversionFactor = 0.00812037; 
-const float alertThreshold = 0.05; 
-
-void countPulse() {  
-    pulseCount++;
-}
+#define WIND_SPEED_PIN A0   // Shamol tezligi sensori
+#define WIND_DIR_PIN   A1   // Shamol yo‘nalishi sensori
 
 void setup() {
-    Serial.begin(9600);
-    pinMode(GEIGER_PIN, INPUT);
-    pinMode(BUZZER_PIN, OUTPUT);
-
-    attachInterrupt(digitalPinToInterrupt(GEIGER_PIN), countPulse, RISING); 
-
-    lcd.init();
-    lcd.backlight();
-    lcd.setCursor(0, 0);
-    lcd.print(" RADIATSIYA KU- ");
-    lcd.setCursor(0, 1);
-    lcd.print("CHINI ANIQLOVCHI");
-    delay(1000);
+  Serial.begin(9600);
+  dht.begin();
 }
 
 void loop() {
-    unsigned long currentMillis = millis();
-    
-    if (currentMillis - previousMillis >= interval) {
-        previousMillis = currentMillis;
+  // --- Shamol tezligi (0–30 m/s)
+  int rawSpeed = analogRead(WIND_SPEED_PIN);
+  float voltage = rawSpeed * (5.0 / 1023.0);
+  float windSpeed = voltage * 6.0; // 1V = 6 m/s
 
-        float CPM = pulseCount * (60.0 / (interval / 1000.0)); 
-        pulseCount = 0;  
+  // --- Shamol yo‘nalishi (0–360°)
+  int rawDir = analogRead(WIND_DIR_PIN); // 6–616 oraliq
+  float windDirection = (rawDir - 6) * (360.0 / (616.0 - 6.0));
 
-        radiationLevel = CPM * conversionFactor;
+  // --- Harorat va namlik
+  float temperature = dht.readTemperature(); // °C
+  float humidity = dht.readHumidity();       // %
 
-        smoothedRadiation = (smoothedRadiation * 9 + radiationLevel) / 10;
+  // --- Agar o‘qishda xato bo‘lsa, - qo'yilsin
+  if (isnan(temperature) || isnan(humidity)) {
+  Serial.println(String(windSpeed, 2) + "|" + String(windDirection, 2) + "|-|-");
+} else {
+  Serial.println(String(windSpeed, 2) + "|" + String(windDirection, 2) + "|" +
+                 String(temperature, 2) + "|" + String(humidity, 2));
+}
 
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("RADIATSIYA KUCHI");
-        lcd.setCursor(0, 1);
-        lcd.print(smoothedRadiation * 1000, 2);
-        lcd.print(" nSv/h");
 
-        Serial.println(smoothedRadiation * 1000, 2);
-
-        if (smoothedRadiation >= alertThreshold) {
-            tone(BUZZER_PIN, 1000, 150);
-        } else {
-            noTone(BUZZER_PIN);
-        }
-    }
+  delay(500); // 500 ms kutish
 }
